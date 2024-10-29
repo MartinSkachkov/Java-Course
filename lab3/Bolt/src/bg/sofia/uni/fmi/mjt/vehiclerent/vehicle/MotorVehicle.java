@@ -17,7 +17,7 @@ public sealed abstract class MotorVehicle extends Vehicle permits Car, Caravan {
         this.pricePerHour = pricePerHour;
     }
 
-    protected double calculateBaseSeatPrice() {
+    protected double calculateSeatPrice() {
         return numberOfSeats * PRICE_PER_SEAT;
     }
 

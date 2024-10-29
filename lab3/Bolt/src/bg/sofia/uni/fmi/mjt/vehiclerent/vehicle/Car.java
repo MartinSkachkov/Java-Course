@@ -10,8 +10,11 @@ public final class Car extends MotorVehicle {
     }
 
     @Override
-    protected void validateRentingPeriod(LocalDateTime start, LocalDateTime end) {
+    protected void validateRentingPeriod(LocalDateTime start, LocalDateTime end) throws InvalidRentingPeriodException {
         // Cars can be rented for any period
+        if (end.isBefore(start)) {
+            throw new InvalidRentingPeriodException("End time cannot be before start time");
+        }
     }
 
     @Override
@@ -20,13 +23,15 @@ public final class Car extends MotorVehicle {
             throw new IllegalArgumentException("Start and end times cannot be null");
         }
 
-        if (endOfRent.isBefore(startOfRent)) {
-            throw new InvalidRentingPeriodException("End time cannot be before start time");
-        }
+        validateRentingPeriod(startOfRent, endOfRent);
 
         long totalDays = calculateDays(startOfRent, endOfRent);
         long weeks = calculateWeeks(startOfRent, endOfRent);
         long remainingDays = totalDays % 7;
         long remainingHours = calculateHours(startOfRent, endOfRent);
+
+        double rentalPrice = (weeks * getPricePerWeek()) + (remainingDays * getPricePerDay()) + (remainingHours * getPricePerHour());
+
+        return rentalPrice + calculateSeatPrice() + calculateFuelTypePrice(totalDays);
     }
 }
