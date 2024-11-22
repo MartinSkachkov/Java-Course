@@ -5,6 +5,8 @@ import bg.sofia.uni.fmi.mjt.glovo.controlcenter.map.MapEntity;
 import bg.sofia.uni.fmi.mjt.glovo.controlcenter.map.MapEntityType;
 import bg.sofia.uni.fmi.mjt.glovo.delivery.DeliveryInfo;
 import bg.sofia.uni.fmi.mjt.glovo.delivery.ShippingMethod;
+import bg.sofia.uni.fmi.mjt.glovo.exception.InvalidMapLayoutException;
+import bg.sofia.uni.fmi.mjt.glovo.exception.MapLayoutIsMissingDeliveryGuysException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +55,7 @@ public class ControlCenter implements ControlCenterApi {
 
         for (int row = 1; row < mapLayout.length; row++) {
             if (mapLayout[row].length != rowLength) {
-                throw new IllegalArgumentException("Rows of the map should be equal length");
+                throw new InvalidMapLayoutException("Rows of the map should be equal length");
             }
         }
     }
@@ -73,8 +75,8 @@ public class ControlCenter implements ControlCenterApi {
         }
     }
 
-    // public List<MapEntity> test() {
-    //   return findAllDeliveryGuys();
+    //public List<MapEntity> test() {
+    //    return findAllDeliveryGuys();
     //}
 
     private List<MapEntity> findAllDeliveryGuys() {
@@ -90,7 +92,7 @@ public class ControlCenter implements ControlCenterApi {
         }
 
         if (deliveryGuys.isEmpty()) {
-            throw new IllegalArgumentException("No delivery guys found on the map");
+            throw new MapLayoutIsMissingDeliveryGuysException("No delivery guys found on the map");
         }
 
         return deliveryGuys;
