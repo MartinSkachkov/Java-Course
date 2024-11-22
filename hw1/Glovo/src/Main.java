@@ -1,4 +1,5 @@
 import bg.sofia.uni.fmi.mjt.glovo.controlcenter.ControlCenter;
+import bg.sofia.uni.fmi.mjt.glovo.controlcenter.ShortestPathFinder;
 import bg.sofia.uni.fmi.mjt.glovo.controlcenter.map.Location;
 import bg.sofia.uni.fmi.mjt.glovo.controlcenter.map.MapEntity;
 import bg.sofia.uni.fmi.mjt.glovo.controlcenter.map.MapEntityType;
@@ -45,6 +46,11 @@ public class Main {
         Location client = new Location(3, 2);
         Location restaurant = new Location(4, 8);
         Location deliveryGuy = new Location(0, 0);
+        Location sameClient = new Location(3, 2);
+
+        System.out.println(client.equals(restaurant)); // false
+        System.out.println(client.equals(sameClient)); // true
+
         try {
             Delivery d = new Delivery(client, restaurant, deliveryGuy, "pizza", 1, 7);
         } catch (RuntimeException e) {
@@ -79,5 +85,13 @@ public class Main {
         //  [MapEntity[location=Location[x=4, y=0], type=WALL], MapEntity[location=Location[x=4, y=1], type=ROAD], MapEntity[location=Location[x=4, y=2], type=WALL], MapEntity[location=Location[x=4, y=3], type=WALL], MapEntity[location=Location[x=4, y=4], type=WALL]]]
 
         //System.out.println(cc.test()); // [MapEntity[location=Location[x=1, y=2], type=DELIVERY_GUY_BIKE], MapEntity[location=Location[x=3, y=3], type=DELIVERY_GUY_CAR]]
+
+        // ShortestPathFinder
+        Location car = new Location(0, 3);
+        Location rest = new Location(1, 3);
+        Location cli = new Location(3, 1);
+
+        System.out.println(ShortestPathFinder.findShortestPath(convertedMap, car, rest));
+        System.out.println(ShortestPathFinder.findShortestPath(convertedMap, rest, cli));
     }
 }
