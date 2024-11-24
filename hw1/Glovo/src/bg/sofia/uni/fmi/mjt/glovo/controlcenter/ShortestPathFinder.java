@@ -63,9 +63,7 @@ public class ShortestPathFinder {
         MapEntityType type = map[x][y].type();
         return type != MapEntityType.WALL;
     }
-
-    // helper methods that can be used to check how the algorithm traverses and updates
-    // the visited and distance values on the map
+    
     private static void printVisitedMatrix(boolean[][] visited) {
         for (boolean[] row : visited) {
             for (boolean cell : row) {

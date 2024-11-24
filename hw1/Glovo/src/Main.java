@@ -1,3 +1,4 @@
+import bg.sofia.uni.fmi.mjt.glovo.Glovo;
 import bg.sofia.uni.fmi.mjt.glovo.controlcenter.ControlCenter;
 import bg.sofia.uni.fmi.mjt.glovo.controlcenter.map.Location;
 import bg.sofia.uni.fmi.mjt.glovo.controlcenter.map.MapEntity;
@@ -5,6 +6,7 @@ import bg.sofia.uni.fmi.mjt.glovo.controlcenter.map.MapEntityType;
 import bg.sofia.uni.fmi.mjt.glovo.delivery.Delivery;
 import bg.sofia.uni.fmi.mjt.glovo.delivery.DeliveryType;
 import bg.sofia.uni.fmi.mjt.glovo.delivery.ShippingMethod;
+import bg.sofia.uni.fmi.mjt.glovo.exception.NoAvailableDeliveryGuyException;
 
 import java.util.Arrays;
 
@@ -29,7 +31,7 @@ public class Main {
         try {
             System.out.println(MapEntityType.fromChar('M'));
         } catch (IllegalArgumentException e) {
-            System.out.println(e);
+            System.out.println(e); //bg.sofia.uni.fmi.mjt.glovo.exception.InvalidMapEntitySymbolTypeException: Unknown map entity symbol: M
         }
 
         // MapEntity
@@ -95,6 +97,16 @@ public class Main {
         //System.out.println(ShortestPathFinder.findShortestPath(convertedMap, car, rest)); // 2
         //System.out.println(ShortestPathFinder.findShortestPath(convertedMap, rest, cli)); // 4
 
-        System.out.println(cc.findOptimalDeliveryGuy(restaurant, cli, -1, -1, ShippingMethod.FASTEST));
+        System.out.println(cc.findOptimalDeliveryGuy(rest, cli, -1, -1, ShippingMethod.CHEAPEST));
+
+        // Glovo
+        Glovo g = new Glovo(layout);
+        MapEntity restau = new MapEntity(rest, MapEntityType.RESTAURANT);
+        MapEntity clie = new MapEntity(cli, MapEntityType.CLIENT);
+        try {
+            System.out.println(g.getCheapestDelivery(clie, restau, "sad"));
+        } catch (NoAvailableDeliveryGuyException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
