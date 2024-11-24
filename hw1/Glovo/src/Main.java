@@ -1,5 +1,4 @@
 import bg.sofia.uni.fmi.mjt.glovo.controlcenter.ControlCenter;
-import bg.sofia.uni.fmi.mjt.glovo.controlcenter.ShortestPathFinder;
 import bg.sofia.uni.fmi.mjt.glovo.controlcenter.map.Location;
 import bg.sofia.uni.fmi.mjt.glovo.controlcenter.map.MapEntity;
 import bg.sofia.uni.fmi.mjt.glovo.controlcenter.map.MapEntityType;
@@ -41,6 +40,8 @@ public class Main {
         }
         MapEntity me = new MapEntity(l, t);
         System.out.println(me); // MapEntity[location=Location[x=7, y=4], type=CLIENT]
+        System.out.println("Location: " + me.location());
+        System.out.println("Type: " + me.type());
 
         // Delivery
         Location client = new Location(3, 2);
@@ -87,11 +88,13 @@ public class Main {
         //System.out.println(cc.test()); // [MapEntity[location=Location[x=1, y=2], type=DELIVERY_GUY_BIKE], MapEntity[location=Location[x=3, y=3], type=DELIVERY_GUY_CAR]]
 
         // ShortestPathFinder
-        Location car = new Location(0, 3);
+        Location car = new Location(3, 3);
         Location rest = new Location(1, 3);
         Location cli = new Location(3, 1);
 
-        System.out.println(ShortestPathFinder.findShortestPath(convertedMap, car, rest));
-        System.out.println(ShortestPathFinder.findShortestPath(convertedMap, rest, cli));
+        //System.out.println(ShortestPathFinder.findShortestPath(convertedMap, car, rest)); // 2
+        //System.out.println(ShortestPathFinder.findShortestPath(convertedMap, rest, cli)); // 4
+
+        System.out.println(cc.findOptimalDeliveryGuy(restaurant, cli, -1, -1, ShippingMethod.FASTEST));
     }
 }
