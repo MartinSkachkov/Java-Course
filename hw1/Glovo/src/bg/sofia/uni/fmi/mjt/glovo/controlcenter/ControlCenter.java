@@ -31,7 +31,7 @@ public class ControlCenter implements ControlCenterApi {
     public DeliveryInfo findOptimalDeliveryGuy(Location restaurantLocation, Location clientLocation,
                                                double maxPrice, int maxTime, ShippingMethod shippingMethod) {
 
-        validateFindOptimalDeliveryGuyFuncParams(restaurantLocation, clientLocation, maxPrice, maxTime, shippingMethod);
+        validateFindOptimalDeliveryGuyFuncParams(maxPrice, maxTime, shippingMethod);
 
         List<MapEntity> deliveryGuys = getAvailableDeliveryGuys();
         if (deliveryGuys == null) {
@@ -75,12 +75,7 @@ public class ControlCenter implements ControlCenterApi {
         }
     }
 
-    private void validateFindOptimalDeliveryGuyFuncParams(Location restaurantLocation, Location clientLocation,
-                                                          double maxPrice, int maxTime, ShippingMethod shippingMethod) {
-        if (restaurantLocation == null || clientLocation == null) {
-            throw new IllegalArgumentException("Restaurant's location or client's location must not be null");
-        }
-
+    private void validateFindOptimalDeliveryGuyFuncParams(double maxPrice, int maxTime, ShippingMethod shippingMethod) {
         if ((maxPrice <= 0 && maxPrice != -1) || (maxTime <= 0 && maxTime != -1)) {
             throw new IllegalArgumentException("Max Price or Max Time must be greater than 0 or -1 (no constraint)");
         }

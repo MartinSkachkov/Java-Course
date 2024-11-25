@@ -97,14 +97,33 @@ public class Main {
         //System.out.println(ShortestPathFinder.findShortestPath(convertedMap, car, rest)); // 2
         //System.out.println(ShortestPathFinder.findShortestPath(convertedMap, rest, cli)); // 4
 
-        System.out.println(cc.findOptimalDeliveryGuy(rest, cli, -1, -1, ShippingMethod.CHEAPEST));
+        //System.out.println(cc.findOptimalDeliveryGuy(rest, cli, -1, -1, ShippingMethod.CHEAPEST));
 
         // Glovo
         Glovo g = new Glovo(layout);
         MapEntity restau = new MapEntity(rest, MapEntityType.RESTAURANT);
+        System.out.println(restau);
         MapEntity clie = new MapEntity(cli, MapEntityType.CLIENT);
         try {
-            System.out.println(g.getCheapestDelivery(clie, restau, "sad"));
+            System.out.println(g.getCheapestDelivery(clie, restau, "sad sadd")); //Delivery[client=Location[x=3, y=1], restaurant=Location[x=1, y=3], deliveryGuy=Location[x=1, y=2], foodItem=sad, price=15.0, estimatedTime=25]
+        } catch (NoAvailableDeliveryGuyException e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            System.out.println(g.getFastestDelivery(clie, restau, "sad")); // Delivery[client=Location[x=3, y=1], restaurant=Location[x=1, y=3], deliveryGuy=Location[x=3, y=3], foodItem=sad, price=30.0, estimatedTime=18]
+        } catch (NoAvailableDeliveryGuyException e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            System.out.println(g.getFastestDeliveryUnderPrice(clie, restau, "sad", 15)); //Delivery[client=Location[x=3, y=1], restaurant=Location[x=1, y=3], deliveryGuy=Location[x=1, y=2], foodItem=sad, price=15.0, estimatedTime=25]
+        } catch (NoAvailableDeliveryGuyException e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            System.out.println(g.getCheapestDeliveryWithinTimeLimit(clie, restau, "sad", 20)); //Delivery[client=Location[x=3, y=1], restaurant=Location[x=1, y=3], deliveryGuy=Location[x=1, y=2], foodItem=sad, price=15.0, estimatedTime=25]
         } catch (NoAvailableDeliveryGuyException e) {
             System.out.println(e.getMessage());
         }

@@ -13,8 +13,8 @@ public record DeliveryInfo(
             throw new IllegalArgumentException("Location and delivery type must not be null");
         }
 
-        if (price < 0 || estimatedTime < 0) {
-            throw new IllegalArgumentException("Price and time must be non-negative");
+        if (price <= 0 || estimatedTime <= 0) {
+            throw new IllegalArgumentException("Price and time must be non-negative or zero");
         }
     }
 }

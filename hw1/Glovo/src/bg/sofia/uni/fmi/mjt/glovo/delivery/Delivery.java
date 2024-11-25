@@ -19,8 +19,8 @@ public record Delivery(
             throw new IllegalArgumentException("Food item cannot be null or blank");
         }
 
-        if (price < 0 || estimatedTime < 0) {
-            throw new IllegalArgumentException("Price and time must be non-negative");
+        if (price <= 0 || estimatedTime <= 0) {
+            throw new IllegalArgumentException("Price and time must be non-negative or zero");
         }
     }
 }
