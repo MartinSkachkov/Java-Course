@@ -33,6 +33,8 @@ public class LocalFileSystemImageManager implements FileSystemImageManager {
         for (File file : filesInDirectory) {
             if (file.isFile() && isSupportedImageFormat(file)) {
                 images.add(loadImage(file));
+            } else {
+                throw new IOException("File path is directory or the image format is not supported");
             }
         }
 
