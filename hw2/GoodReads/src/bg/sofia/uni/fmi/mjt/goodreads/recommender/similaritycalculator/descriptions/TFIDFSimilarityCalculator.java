@@ -33,6 +33,8 @@ public class TFIDFSimilarityCalculator implements SimilarityCalculator {
      */
     @Override
     public double calculateSimilarity(Book first, Book second) {
+        booksNotNullValidation(first, second);
+
         Map<String, Double> tfIdfScoresFirst = computeTFIDF(first);
         Map<String, Double> tfIdfScoresSecond = computeTFIDF(second);
 
@@ -94,13 +96,9 @@ public class TFIDFSimilarityCalculator implements SimilarityCalculator {
         return idf;
     }
 
-    private void bookNotNullValidation(Book book) {
-        if (book == null) {
-            throw new IllegalArgumentException("The book cannot be null.");
-        }
-    }
-
     private double cosineSimilarity(Map<String, Double> first, Map<String, Double> second) {
+        validateMapsNotNull(first, second);
+
         double magnitudeFirst = magnitude(first.values());
         double magnitudeSecond = magnitude(second.values());
 
@@ -108,6 +106,8 @@ public class TFIDFSimilarityCalculator implements SimilarityCalculator {
     }
 
     private double dotProduct(Map<String, Double> first, Map<String, Double> second) {
+        validateMapsNotNull(first, second);
+
         Set<String> commonKeys = new HashSet<>(first.keySet());
         commonKeys.retainAll(second.keySet());
 
@@ -117,10 +117,36 @@ public class TFIDFSimilarityCalculator implements SimilarityCalculator {
     }
 
     private double magnitude(Collection<Double> input) {
+        validateCollectionNotNull(input);
+
         double squaredMagnitude = input.stream()
                 .map(v -> v * v)
                 .reduce(0.0, Double::sum);
 
         return Math.sqrt(squaredMagnitude);
+    }
+
+    private void bookNotNullValidation(Book book) {
+        if (book == null) {
+            throw new IllegalArgumentException("The book cannot be null.");
+        }
+    }
+
+    private void booksNotNullValidation(Book first, Book second) {
+        if (first == null || second == null) {
+            throw new IllegalArgumentException("Books cannot be null");
+        }
+    }
+
+    private void validateMapsNotNull(Map<String, Double> first, Map<String, Double> second) {
+        if (first == null || second == null) {
+            throw new IllegalArgumentException("The first or second map cannot be null");
+        }
+    }
+
+    private void validateCollectionNotNull(Collection<Double> collection) {
+        if (collection == null) {
+            throw new IllegalArgumentException("The collection cannot be null");
+        }
     }
 }

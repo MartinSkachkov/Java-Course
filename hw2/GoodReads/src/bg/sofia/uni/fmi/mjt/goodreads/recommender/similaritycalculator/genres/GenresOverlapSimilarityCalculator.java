@@ -10,7 +10,7 @@ public class GenresOverlapSimilarityCalculator implements SimilarityCalculator {
 
     @Override
     public double calculateSimilarity(Book first, Book second) {
-        validateInput(first, second);
+        booksNotNullValidation(first, second);
 
         Set<String> firstBookGenresSet = new HashSet<>(first.genres());
         Set<String> secondBookGenresSet = new HashSet<>(second.genres());
@@ -24,7 +24,7 @@ public class GenresOverlapSimilarityCalculator implements SimilarityCalculator {
         return (double) intersectionSize / minSize;
     }
 
-    private void validateInput(Book first, Book second) {
+    private void booksNotNullValidation(Book first, Book second) {
         if (first == null || second == null) {
             throw new IllegalArgumentException("Books cannot be null");
         }

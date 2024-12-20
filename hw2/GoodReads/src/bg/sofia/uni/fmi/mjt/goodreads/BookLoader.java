@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 public class BookLoader {
 
     public static Set<Book> load(Reader reader) {
+        validateInput(reader);
 
         try (CSVReader csvReader = new CSVReader(reader)) {
             return csvReader.readAll().stream()
@@ -24,5 +25,11 @@ public class BookLoader {
         }
 
     }
-    
+
+    private static void validateInput(Reader reader) {
+        if (reader == null) {
+            throw new IllegalArgumentException("Reader cannot be null");
+        }
+    }
+
 }

@@ -13,6 +13,8 @@ public class TextTokenizer {
     private final Set<String> stopwords;
 
     public TextTokenizer(Reader stopwordsReader) {
+        validateInput(stopwordsReader);
+
         try (var br = new BufferedReader(stopwordsReader)) {
             stopwords = br.lines().collect(Collectors.toSet());
         } catch (IOException ex) {
@@ -21,12 +23,13 @@ public class TextTokenizer {
     }
 
     public List<String> tokenize(String input) {
-        validateInput(input);
+        validateStringInput(input);
 
         Set<String> formattedStopwords = formatStopwords();
 
         return Arrays.stream(input.toLowerCase()
-                        .replaceAll("\\p{Punct}", "")
+                        .replace("'", "")
+                        .replaceAll("\\p{Punct}", " ")
                         .replaceAll("\\s+", " ")
                         .split(" "))
                 .map(String::trim)
@@ -39,20 +42,27 @@ public class TextTokenizer {
         return stopwords;
     }
 
-    private void validateInput(String input) {
-        if (input == null || input.isBlank()) {
-            throw new IllegalArgumentException("Input cannot be null or blank");
+    private void validateInput(Reader stopwordsReader) {
+        if (stopwordsReader == null) {
+            throw new IllegalArgumentException("stopwordsReader cannot be null");
         }
     }
 
-    private Set<String> formatStopwords() {
+    private void validateStringInput(String input) {
+        if (input == null) {
+            throw new IllegalArgumentException("Input cannot be null");
+        }
+    }
+
+    public Set<String> formatStopwords() {
         if (stopwords == null) {
             return Set.of();
         }
 
         return stopwords.stream()
                 .map(String::toLowerCase)
-                .map(word -> word.replaceAll("\\p{Punct}", ""))
+                .map(word -> word.replace("'", ""))
+                .map(String::trim)
                 .collect(Collectors.toSet());
     }
 

@@ -24,6 +24,40 @@ public record Book(
     private static final int INDEX_RATING_COUNT = 6;
     private static final int INDEX_URL = 7;
 
+    public Book {
+        if (ID == null) {
+            throw new IllegalArgumentException("ID cannot be null.");
+        }
+
+        if (title == null) {
+            throw new IllegalArgumentException("Title cannot be null.");
+        }
+
+        if (author == null) {
+            throw new IllegalArgumentException("Author cannot be null.");
+        }
+
+        if (description == null) {
+            throw new IllegalArgumentException("Description cannot be null.");
+        }
+
+        if (genres == null) {
+            throw new IllegalArgumentException("Genres cannot be null.");
+        }
+
+        if (URL == null) {
+            throw new IllegalArgumentException("URL cannot be null.");
+        }
+
+        if (rating < 0) {
+            throw new IllegalArgumentException("Rating cannot be negative.");
+        }
+
+        if (ratingCount < 0) {
+            throw new IllegalArgumentException("Rating count cannot be negative.");
+        }
+    }
+
     public static Book of(String[] tokens) {
         validateInput(tokens);
 
