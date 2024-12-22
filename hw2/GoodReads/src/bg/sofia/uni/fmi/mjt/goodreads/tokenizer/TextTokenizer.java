@@ -54,7 +54,7 @@ public class TextTokenizer {
         }
     }
 
-    public Set<String> formatStopwords() {
+    private Set<String> formatStopwords() {
         if (stopwords == null) {
             return Set.of();
         }

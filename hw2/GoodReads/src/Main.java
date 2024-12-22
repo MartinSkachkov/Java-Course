@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
 
@@ -15,7 +16,7 @@ public class Main {
     public static void main(String[] args) {
         // Пътят до вашия файл
         String filePath = "C:\\Users\\Marto\\IdeaProjects\\GoodReads\\src\\goodreads_data_copy.csv";
-        String stopwords = "C:\\Users\\Marto\\IdeaProjects\\GoodReads\\src\\stopwords.txt";
+        String stopwords = "C:\\Users\\Marto\\IdeaProjects\\GoodReads\\src\\stopwords_update.txt";
 
 //        try (FileReader reader = new FileReader(filePath)) {
 //            // Извикване на BookLoader.load
@@ -43,7 +44,7 @@ public class Main {
             System.out.println(tt.tokenize("MARTO . about ABOve a?a  user-friendly   haven't again where's   all a,m an i'd  агубамуба    any i'll aren't as\n"));
             System.out.println(tt.tokenize(""));
             System.out.println(tt.tokenize("Do You Do What You Do Best Every Day?Chances are, you don't."));
-            System.out.println(tt.formatStopwords());
+            //System.out.println(tt.formatStopwords());
 
             System.out.println(tt.tokenize("don't"));
             System.out.println(tt.tokenize("dDDn't"));
@@ -63,7 +64,7 @@ public class Main {
         Book book2 = new Book("2", "Book Two", "Author B", "Descript.ion Bdasd  don't I sdsd sdaaa ssvfvg vcv!",
                 Arrays.asList("Fiction", "Fantasy", "Literature", "Children", "Adults"), 4.2, 300, "url2");
 
-        System.out.println(book1.genres());
+        //System.out.println(book1.parseGenres(book1.genres().toString()));
 
         // Създаваме обект за изчисляване на сходство
         GenresOverlapSimilarityCalculator calculator = new GenresOverlapSimilarityCalculator();
@@ -169,6 +170,9 @@ public class Main {
             System.out.println("Book: " + book.title() + ", Similarity: " + similarity1);
         });
 
-
+        String s = List.of(
+                "Classics", "Childrens", "Fiction", "Fantasy", "Animals", "Middle Grade", "Audiobook").toString();
+        System.out.println(s);
+        System.out.println();
     }
 }

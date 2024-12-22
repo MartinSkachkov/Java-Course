@@ -22,7 +22,7 @@ public class BookRecommender implements BookRecommenderAPI {
 
     @Override
     public SortedMap<Book, Double> recommendBooks(Book origin, int maxN) {
-        validateRecommendBooksParameters(origin, maxN);
+        validateRecommendBooksParams(origin, maxN);
 
         Map<Book, Double> unsortedSimilarBooks = new HashMap<>();
 
@@ -51,7 +51,7 @@ public class BookRecommender implements BookRecommenderAPI {
         }
     }
 
-    private void validateRecommendBooksParameters(Book origin, int maxN) {
+    private void validateRecommendBooksParams(Book origin, int maxN) {
         if (origin == null) {
             throw new IllegalArgumentException("Origin book cannot be null.");
         }

@@ -80,11 +80,14 @@ public record Book(
     }
 
     private static List<String> parseGenres(String genreString) {
+        validateGenreStringNotNull(genreString);
+
         return Arrays.stream(genreString
                         .replace("[", "")
                         .replace("]", "")
                         .split(","))
                 .map(String::trim)
+                .filter(s -> !s.isEmpty())
                 .toList();
     }
 
@@ -101,6 +104,12 @@ public record Book(
             return Integer.parseInt(ratingCountString.replace(",", ""));
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Invalid rating count value: " + ratingCountString, e);
+        }
+    }
+
+    private static void validateGenreStringNotNull(String genreString) {
+        if (genreString == null) {
+            throw new IllegalArgumentException("Genre string cannot be null");
         }
     }
 }

@@ -99,8 +99,8 @@ public class BookFinder implements BookFinderAPI {
     }
 
     private void validateSearchByGenresParams(Set<String> genres, MatchOption option) {
-        if (genres == null || genres.isEmpty()) {
-            throw new IllegalArgumentException("Genres cannot be null or empty");
+        if (genres == null) {
+            throw new IllegalArgumentException("Genres cannot be null");
         }
 
         if (option == null) {
