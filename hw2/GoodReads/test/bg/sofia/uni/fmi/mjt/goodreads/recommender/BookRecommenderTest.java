@@ -1,7 +1,7 @@
-package bg.sofia.uni.fmi.mjt.goodreads.recommender.similaritycalculator;
+package bg.sofia.uni.fmi.mjt.goodreads.recommender;
 
 import bg.sofia.uni.fmi.mjt.goodreads.book.Book;
-import bg.sofia.uni.fmi.mjt.goodreads.recommender.BookRecommender;
+import bg.sofia.uni.fmi.mjt.goodreads.recommender.similaritycalculator.SimilarityCalculator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -5,9 +5,9 @@ import bg.sofia.uni.fmi.mjt.goodreads.tokenizer.TextTokenizer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.StringReader;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,8 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class BookFinderTest {
@@ -26,14 +24,19 @@ public class BookFinderTest {
     private final Book book2 = new Book("2", "Book Two", "Author B", "Description of Book Two", List.of("Fantasy"), 4.0, 150, "url2");
     private final Book book3 = new Book("3", "Book Three", "Author A", "Description of Book Three", List.of("Adventure", "Science Fiction"), 4.7, 120, "url3");
     private final Book book4 = new Book("4", "Book Four", "Author М", "Description of Book Four", List.of(), 4.3, 80, "url4");
-    @Mock
-    private TextTokenizer tokenizer;
+
     private BookFinder bookFinder;
+    private TextTokenizer tokenizer;
     private Set<Book> books;
 
     @BeforeEach
     void setUp() {
         books = new HashSet<>(List.of(book1, book2, book3, book4));
+
+        String stopwords = "a" + System.lineSeparator() + "an" + System.lineSeparator() + "the" + System.lineSeparator() +
+                "of" + System.lineSeparator() + "for" + System.lineSeparator() + "with" + System.lineSeparator();
+        tokenizer = new TextTokenizer(new StringReader(stopwords));
+
         bookFinder = new BookFinder(books, tokenizer);
     }
 
@@ -122,30 +125,34 @@ public class BookFinderTest {
     void testSearchByKeywordsMatchAll() {
         Set<String> keywords = new HashSet<>(List.of("description", "book"));
 
-        when(tokenizer.tokenize("Description of Book One")).thenReturn(List.of("description", "of", "book", "one"));
-        when(tokenizer.tokenize("Description of Book Two")).thenReturn(List.of("description", "of", "book", "two"));
-        when(tokenizer.tokenize("Book One")).thenReturn(List.of("book", "one"));
-        when(tokenizer.tokenize("Book Two")).thenReturn(List.of("book", "two"));
-        when(tokenizer.tokenize(anyString())).thenReturn(List.of("default", "tokens"));
-
         List<Book> result = bookFinder.searchByKeywords(keywords, MatchOption.MATCH_ALL);
 
-        assertEquals(2, result.size(), "There should be 2 books matching all keywords");
+        assertEquals(4, result.size(), "There should be 4 books matching all keywords");
         assertTrue(result.contains(book1), "Book One should match all keywords");
         assertTrue(result.contains(book2), "Book Two should match all keywords");
+        assertTrue(result.contains(book3), "Book Two should match all keywords");
+        assertTrue(result.contains(book4), "Book Two should match all keywords");
     }
 
     @Test
     void testSearchByKeywordsNoMatches() {
         Set<String> keywords = new HashSet<>(List.of("nonexistent"));
+        List<Book> result = bookFinder.searchByKeywords(keywords, MatchOption.MATCH_ANY);
 
-        when(tokenizer.tokenize("Description of Book One")).thenReturn(List.of("description", "of", "book", "one"));
-        when(tokenizer.tokenize("Description of Book Two")).thenReturn(List.of("description", "of", "book", "two"));
-        when(tokenizer.tokenize(anyString())).thenReturn(List.of("default", "tokens"));
+        assertTrue(result.isEmpty(), "There should be no books matching the keywords");
+    }
+
+    @Test
+    void testSearchByKeywordsMatchAny() {
+        Set<String> keywords = new HashSet<>(List.of("book", "fantasy"));
 
         List<Book> result = bookFinder.searchByKeywords(keywords, MatchOption.MATCH_ANY);
-        System.out.printf(result.toString());
-        assertTrue(result.isEmpty(), "There should be no books matching the keywords");
+
+        assertEquals(4, result.size(), "There should be 4 books matching any of the keywords");
+        assertTrue(result.contains(book1), "Book One should match any keyword");
+        assertTrue(result.contains(book2), "Book Two should match any keyword");
+        assertTrue(result.contains(book3), "Book Three should match any keyword");
+        assertTrue(result.contains(book4), "Book Three should match any keyword");
     }
 
     @Test
