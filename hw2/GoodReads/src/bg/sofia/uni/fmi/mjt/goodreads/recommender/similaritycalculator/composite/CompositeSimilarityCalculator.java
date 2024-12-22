@@ -13,8 +13,7 @@ public class CompositeSimilarityCalculator implements SimilarityCalculator {
 
         this.similarityCalculatorMap = similarityCalculatorMap;
     }
-
-
+    
     @Override
     public double calculateSimilarity(Book first, Book second) {
         booksNotNullValidation(first, second);

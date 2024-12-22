@@ -285,4 +285,5 @@ public class BookTest {
         assertThrows(IllegalArgumentException.class, () -> Book.of(tokens),
                 "Expected IllegalArgumentException when the book URL is null, but no exception was thrown.");
     }
+    
 }

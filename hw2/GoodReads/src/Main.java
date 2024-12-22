@@ -1,22 +1,18 @@
 import bg.sofia.uni.fmi.mjt.goodreads.book.Book;
-import bg.sofia.uni.fmi.mjt.goodreads.recommender.BookRecommender;
-import bg.sofia.uni.fmi.mjt.goodreads.recommender.similaritycalculator.SimilarityCalculator;
-import bg.sofia.uni.fmi.mjt.goodreads.recommender.similaritycalculator.genres.GenresOverlapSimilarityCalculator;
+import bg.sofia.uni.fmi.mjt.goodreads.finder.BookFinder;
+import bg.sofia.uni.fmi.mjt.goodreads.finder.MatchOption;
 import bg.sofia.uni.fmi.mjt.goodreads.tokenizer.TextTokenizer;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Arrays;
+import java.io.StringReader;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedMap;
 
 public class Main {
     public static void main(String[] args) {
         // Пътят до вашия файл
-        String filePath = "C:\\Users\\Marto\\IdeaProjects\\GoodReads\\src\\goodreads_data_copy.csv";
-        String stopwords = "C:\\Users\\Marto\\IdeaProjects\\GoodReads\\src\\stopwords_update.txt";
+//        String filePath = "C:\\Users\\Marto\\IdeaProjects\\GoodReads\\src\\goodreads_data_copy.csv";
+//        String stopwords = "C:\\Users\\Marto\\IdeaProjects\\GoodReads\\src\\stopwords_update.txt";
 
 //        try (FileReader reader = new FileReader(filePath)) {
 //            // Извикване на BookLoader.load
@@ -37,51 +33,51 @@ public class Main {
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        try (FileReader reader = new FileReader(stopwords)) {
-            TextTokenizer tt = new TextTokenizer(reader);
-            System.out.println(tt.stopwords());
-
-            System.out.println(tt.tokenize("MARTO . about ABOve a?a  user-friendly   haven't again where's   all a,m an i'd  агубамуба    any i'll aren't as\n"));
-            System.out.println(tt.tokenize(""));
-            System.out.println(tt.tokenize("Do You Do What You Do Best Every Day?Chances are, you don't."));
-            //System.out.println(tt.formatStopwords());
-
-            System.out.println(tt.tokenize("don't"));
-            System.out.println(tt.tokenize("dDDn't"));
-        } catch (IOException e) {
-            System.err.println("Error reading file: " + e.getMessage());
-        } catch (IllegalArgumentException e) {
-            System.err.println("Invalid input: " + e.getMessage());
-        }
+//        try (FileReader reader = new FileReader(stopwords)) {
+//            TextTokenizer tt = new TextTokenizer(reader);
+//            System.out.println(tt.stopwords());
+//
+//            System.out.println(tt.tokenize("MARTO . about ABOve a?a  user-friendly   haven't again where's   all a,m an i'd  агубамуба    any i'll aren't as\n"));
+//            System.out.println(tt.tokenize(""));
+//            System.out.println(tt.tokenize("Do You Do What You Do Best Every Day?Chances are, you don't."));
+//            //System.out.println(tt.formatStopwords());
+//
+//            System.out.println(tt.tokenize("don't"));
+//            System.out.println(tt.tokenize("dDDn't"));
+//        } catch (IOException e) {
+//            System.err.println("Error reading file: " + e.getMessage());
+//        } catch (IllegalArgumentException e) {
+//            System.err.println("Invalid input: " + e.getMessage());
+//        }
 
         // [very, been, don't, about, what's, couldn't, during, your, when, haven't, ...]
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         // Примерни книги
-        Book book1 = new Book("1", "Book One", "Author A", "Description A",
-                Arrays.asList("Fiction", "Drama", "Adventure", "Thrill", "Comedy"), 4.5, 500, "url1");
-        Book book2 = new Book("2", "Book Two", "Author B", "Descript.ion Bdasd  don't I sdsd sdaaa ssvfvg vcv!",
-                Arrays.asList("Fiction", "Fantasy", "Literature", "Children", "Adults"), 4.2, 300, "url2");
-
-        //System.out.println(book1.parseGenres(book1.genres().toString()));
-
-        // Създаваме обект за изчисляване на сходство
-        GenresOverlapSimilarityCalculator calculator = new GenresOverlapSimilarityCalculator();
-
-        // Изчисляваме сходството между двете книги
-        double similarity = calculator.calculateSimilarity(book1, book2);
-        System.out.println("Genres Similarity: " + similarity); // between 0 and 1
-
-        try (FileReader reader = new FileReader(stopwords)) {
-            TextTokenizer tt = new TextTokenizer(reader);
-
-
-            System.out.println(tt.tokenize(book2.description())); // [descript, ion, bdasd, sdsd, sdaaa, ssvfvg, vcv]
-            System.out.println(tt.tokenize(book2.title()));
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+//        Book book1 = new Book("1", "Book One", "Author A", "Description A",
+//                Arrays.asList("Fiction", "Drama", "Adventure", "Thrill", "Comedy"), 4.5, 500, "url1");
+//        Book book2 = new Book("2", "Book Two", "Author B", "Descript.ion Bdasd  don't I sdsd sdaaa ssvfvg vcv!",
+//                Arrays.asList("Fiction", "Fantasy", "Literature", "Children", "Adults"), 4.2, 300, "url2");
+//
+//        //System.out.println(book1.parseGenres(book1.genres().toString()));
+//
+//        // Създаваме обект за изчисляване на сходство
+//        GenresOverlapSimilarityCalculator calculator = new GenresOverlapSimilarityCalculator();
+//
+//        // Изчисляваме сходството между двете книги
+//        double similarity = calculator.calculateSimilarity(book1, book2);
+//        System.out.println("Genres Similarity: " + similarity); // between 0 and 1
+//
+//        try (FileReader reader = new FileReader(stopwords)) {
+//            TextTokenizer tt = new TextTokenizer(reader);
+//
+//
+//            System.out.println(tt.tokenize(book2.description())); // [descript, ion, bdasd, sdsd, sdaaa, ssvfvg, vcv]
+//            System.out.println(tt.tokenize(book2.title()));
+//        } catch (Exception e) {
+//            System.out.println(e);
+//        }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -134,45 +130,100 @@ public class Main {
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        // Създаване на книги
-        String[] tokensBookX = {
-                "1", "Book X", "Author A", "academy superhero club superhero", "[Action, Superhero, Drama]", "4.5", "500", "url1"
-        };
-        String[] tokensBookY = {
-                "2", "Book Y", "Author B", "superhero mission save club", "[Action, Adventure, Superhero]", "4.2", "300", "url2"
-        };
-        String[] tokensBookZ = {
-                "3", "Book Z", "Author C", "crime murder mystery club", "[Crime, Mystery, Thriller, Drama]", "4.0", "400", "url3"
-        };
+//        // Създаване на книги
+//        String[] tokensBookX = {
+//                "1", "Book X", "Author A", "academy superhero club superhero", "[Action, Superhero, Drama]", "4.5", "500", "url1"
+//        };
+//        String[] tokensBookY = {
+//                "2", "Book Y", "Author B", "superhero mission save club", "[Action, Adventure, Superhero]", "4.2", "300", "url2"
+//        };
+//        String[] tokensBookZ = {
+//                "3", "Book Z", "Author C", "crime murder mystery club", "[Crime, Mystery, Thriller, Drama]", "4.0", "400", "url3"
+//        };
+//
+//        Book bookX = Book.of(tokensBookX);
+//        Book bookY = Book.of(tokensBookY);
+//        Book bookZ = Book.of(tokensBookZ);
+//
+//        // Създаване на сет с книги
+//        Set<Book> books = new HashSet<>();
+//        books.add(bookX);
+//        books.add(bookY);
+//        books.add(bookZ);
+//
+//        // Избиране на калкулатор за сходство (например по жанрове)
+//        SimilarityCalculator calculator1 = new GenresOverlapSimilarityCalculator();
+//
+//        // Създаване на препоръчваща система
+//        BookRecommender recommender = new BookRecommender(books, calculator1);
+//
+//        // Препоръка на книги за "Book X"
+//        SortedMap<Book, Double> recommendations = recommender.recommendBooks(bookX, 1);
+//
+//        // Извеждане на резултатите
+//        System.out.println("Recommended books based on 'Book X':");
+//        recommendations.forEach((book, similarity1) -> {
+//            System.out.println("Book: " + book.title() + ", Similarity: " + similarity1);
+//        });
+//
+//        String s = List.of(
+//                "Classics", "Childrens", "Fiction", "Fantasy", "Animals", "Middle Grade", "Audiobook").toString();
+//        System.out.println(s);
+//        System.out.println();
 
-        Book bookX = Book.of(tokensBookX);
-        Book bookY = Book.of(tokensBookY);
-        Book bookZ = Book.of(tokensBookZ);
-
-        // Създаване на сет с книги
+//        Book book1 = new Book("1", "Book One", "Author A", "Description of Book One", List.of("Fantasy", "Adventure"), 4.5, 100, "url1");
+//        Book book2 = new Book("2", "Book Two", "Author B", "Description of Book Two", List.of("Fantasy"), 4.0, 150, "url2");
+//        Book book3 = new Book("3", "Book Three", "Author A", "Description of Book Three", List.of("Adventure", "Science Fiction"), 4.7, 120, "url3");
+//        Book book4 = new Book("4", "Book Four", "Author M", "Description of Book Four", List.of(), 4.3, 80, "url4");
+//        Set<Book> books = new HashSet<>(List.of(book1, book2, book3, book4));
+//        TextTokenizer tokenizer = new TextTokenizer();
+//        BookFinder bookFinder = new BookFinder(books, tokenizer);
+//        Set<String> keywords = Set.of("description", "book");
+//        List<Book> result = bookFinder.searchByKeywords(keywords, MatchOption.MATCH_ALL);
+//        System.out.println("Books matching all keywords:");
+//        result.forEach(book -> System.out.println(book.title()));
+//        Set<String> keywordsAny = Set.of("fantasy");
+//        List<Book> resultAny = bookFinder.searchByKeywords(keywordsAny, MatchOption.MATCH_ANY);
+//        System.out.println("\nBooks matching any keyword:");
+//        resultAny.forEach(book -> System.out.println(book.title()));
         Set<Book> books = new HashSet<>();
-        books.add(bookX);
-        books.add(bookY);
-        books.add(bookZ);
+        books.add(new Book("1", "Book One", "Author A", "Description of  One. More.", List.of("Fantasy", "Adventure"), 4.5, 100, "url1"));
+        books.add(new Book("2", "Book Two", "Author B", "Description of  Two", List.of("Fantasy"), 4.0, 150, "url2"));
+        books.add(new Book("3", " Three", "Author A", "Description of  Three", List.of("Adventure", "Science Fiction"), 4.7, 120, "url3"));
+        books.add(new Book("4", " Four", "Author M", " of  Four", List.of(), 4.3, 80, "url4"));
 
-        // Избиране на калкулатор за сходство (например по жанрове)
-        SimilarityCalculator calculator1 = new GenresOverlapSimilarityCalculator();
+        // Create a TextTokenizer with some stopwords
+        String stopwords = "and\nor\nthe\nof"; // Sample stopwords
+        TextTokenizer tokenizer = new TextTokenizer(new StringReader(stopwords));
 
-        // Създаване на препоръчваща система
-        BookRecommender recommender = new BookRecommender(books, calculator1);
+        // Create the BookFinder instance
+        BookFinder bookFinder = new BookFinder(books, tokenizer);
 
-        // Препоръка на книги за "Book X"
-        SortedMap<Book, Double> recommendations = recommender.recommendBooks(bookX, 1);
+        // Define some test keywords
+        Set<String> keywords = new HashSet<>();
+        keywords.add("book");
+        keywords.add("description");
 
-        // Извеждане на резултатите
-        System.out.println("Recommended books based on 'Book X':");
-        recommendations.forEach((book, similarity1) -> {
-            System.out.println("Book: " + book.title() + ", Similarity: " + similarity1);
-        });
+        // Search for books that match the keywords using MATCH_ANY
+        System.out.println("Searching for books with keywords 'book' or 'description' (MATCH_ANY):");
+        List<Book> resultAny = bookFinder.searchByKeywords(keywords, MatchOption.MATCH_ANY);
+        resultAny.forEach(book -> System.out.println("Found book: " + book.title()));
 
-        String s = List.of(
-                "Classics", "Childrens", "Fiction", "Fantasy", "Animals", "Middle Grade", "Audiobook").toString();
-        System.out.println(s);
-        System.out.println();
+        // Search for books that match all the keywords using MATCH_ALL
+        System.out.println("\nSearching for books with keywords 'book' and 'description' (MATCH_ALL):");
+        List<Book> resultAll = bookFinder.searchByKeywords(keywords, MatchOption.MATCH_ALL);
+        resultAll.forEach(book -> System.out.println("Found book: " + book.title()));
+
+        // Test with a keyword that doesn't match any books
+        Set<String> nonExistentKeywords = new HashSet<>();
+        nonExistentKeywords.add("nonexistent");
+
+        System.out.println("\nSearching for books with the keyword 'nonexistent' (MATCH_ANY):");
+        List<Book> noMatchResult = bookFinder.searchByKeywords(nonExistentKeywords, MatchOption.MATCH_ANY);
+        if (noMatchResult.isEmpty()) {
+            System.out.println("No books found with the keyword 'nonexistent'.");
+        } else {
+            noMatchResult.forEach(book -> System.out.println("Found book: " + book.title()));
+        }
     }
 }

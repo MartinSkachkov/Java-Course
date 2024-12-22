@@ -21,7 +21,7 @@ public class GenresOverlapSimilarityCalculator implements SimilarityCalculator {
         int intersectionSize = intersection.size();
         int minSize = Math.min(firstBookGenresSet.size(), secondBookGenresSet.size());
 
-        return (double) intersectionSize / minSize;
+        return (minSize == 0) ? 0.0 : (double) intersectionSize / minSize;
     }
 
     private void booksNotNullValidation(Book first, Book second) {

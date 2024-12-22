@@ -44,6 +44,12 @@ public class BookFinder implements BookFinderAPI {
     public List<Book> searchByGenres(Set<String> genres, MatchOption option) {
         validateSearchByGenresParams(genres, option);
 
+        if (genres.isEmpty()) {
+            return books.stream()
+                    .filter(book -> book.genres().isEmpty())
+                    .toList();
+        }
+
         return switch (option) {
             case MATCH_ALL -> books.stream()
                     .filter(book -> book.genres().containsAll(genres))
